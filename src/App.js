@@ -1,8 +1,9 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
-import { 
-  Container, TextField, Button, Typography, Paper, 
-  Switch, AppBar, Toolbar, CssBaseline, IconButton 
+import { format } from 'date-fns';
+import {
+  Container, TextField, Button, Typography, Paper,
+  AppBar, Toolbar, CssBaseline, IconButton, Box
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
@@ -13,6 +14,12 @@ const App = () => {
   const [location, setLocation] = useState('');
   const [weatherData, setWeatherData] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
+  const [dateTime, setDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const timer = setInterval(() => setDateTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
   const fetchWeather = async () => {
     try {
@@ -56,6 +63,11 @@ const App = () => {
             Search
           </Button>
         </Paper>
+        <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h6">
+            {format(dateTime, 'PPPPpppp')}
+          </Typography>
+        </Box>
         {weatherData && <WeatherDisplay data={weatherData} />}
       </Container>
     </ThemeProvider>
