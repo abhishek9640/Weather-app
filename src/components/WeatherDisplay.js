@@ -2,12 +2,14 @@ import React from 'react';
 import { Card, CardContent, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 
+// Styled card component
 const StyledCard = styled(Card)(({ theme }) => ({
   marginTop: 16,
   backgroundColor: theme.palette.background.default,
   color: theme.palette.text.primary,
 }));
 
+// WeatherDisplay component to display weather details
 const WeatherDisplay = ({ data }) => {
   const { name, main, weather, wind } = data;
 
