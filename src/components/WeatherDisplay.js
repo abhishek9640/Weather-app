@@ -1,16 +1,19 @@
 import React from 'react';
+import { Card, CardContent, Typography } from '@mui/material';
 
 const WeatherDisplay = ({ data }) => {
   const { name, main, weather, wind } = data;
 
   return (
-    <div className="weather-display">
-      <h2>{name}</h2>
-      <p>Temperature: {main.temp}°C</p>
-      <p>Humidity: {main.humidity}%</p>
-      <p>Wind Speed: {wind.speed} m/s</p>
-      <p>Description: {weather[0].description}</p>
-    </div>
+    <Card style={{ marginTop: 16 }}>
+      <CardContent>
+        <Typography variant="h5">{name}</Typography>
+        <Typography variant="h6">Temperature: {main.temp}°C</Typography>
+        <Typography variant="h6">Humidity: {main.humidity}%</Typography>
+        <Typography variant="h6">Wind Speed: {wind.speed} m/s</Typography>
+        <Typography variant="h6">Description: {weather[0].description}</Typography>
+      </CardContent>
+    </Card>
   );
 };
 

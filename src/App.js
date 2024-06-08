@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { Container, TextField, Button, Typography, Paper, Switch, AppBar, Toolbar } from '@mui/material';
 import WeatherDisplay from './components/WeatherDisplay';
 import './App.css';
 
@@ -18,24 +19,30 @@ const App = () => {
   };
 
   return (
-    <div className={darkMode ? 'app dark-mode' : 'app'}>
-      <header className="app-header">
-        <h1>Weather App</h1>
-        <button onClick={() => setDarkMode(!darkMode)}>
-          {darkMode ? 'Light Mode' : 'Dark Mode'}
-        </button>
-      </header>
-      <div className="input-container">
-        <input
-          type="text"
-          placeholder="Enter city or zip code"
+    <Container maxWidth="sm" className={darkMode ? 'app dark-mode' : 'app'}>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6" style={{ flexGrow: 1 }}>
+            Weather App
+          </Typography>
+          <Switch checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
+        </Toolbar>
+      </AppBar>
+      <Paper style={{ padding: 16, marginTop: 16 }}>
+        <TextField
+          fullWidth
+          variant="outlined"
+          label="Enter city or zip code"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
+          style={{ marginBottom: 16 }}
         />
-        <button onClick={fetchWeather}>Search</button>
-      </div>
+        <Button variant="contained" color="primary" fullWidth onClick={fetchWeather}>
+          Search
+        </Button>
+      </Paper>
       {weatherData && <WeatherDisplay data={weatherData} />}
-    </div>
+    </Container>
   );
 };
 
