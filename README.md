@@ -40,6 +40,7 @@ This is a weather application built using React and the Open Weather API. The ap
 - React
 - Axios
 - CSS
+- Material UI
 
 
 
