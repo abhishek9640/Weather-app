@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import axios from 'axios';
 import { format } from 'date-fns';
 import {
   Container, TextField, Button, Typography, Paper,
-  AppBar, Toolbar, CssBaseline, IconButton, Box, Grid
+  AppBar, Toolbar, CssBaseline, IconButton, Box, Grid, Card, CardContent
 } from '@mui/material';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
@@ -14,16 +14,15 @@ const App = () => {
   const [location, setLocation] = useState('');
   const [locations, setLocations] = useState([]);
   const [weatherData, setWeatherData] = useState([]);
+  const [currentWeather, setCurrentWeather] = useState(null);
   const [darkMode, setDarkMode] = useState(false);
   const [dateTime, setDateTime] = useState(new Date());
 
-  // Update dateTime every second
   useEffect(() => {
     const timer = setInterval(() => setDateTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
 
-  // Fetch weather data for the specified location
   const fetchWeather = async (location) => {
     try {
       const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?q=${location}&appid=4eaa05d060a706d091b5db87df2eedb9&units=metric`);
@@ -33,7 +32,28 @@ const App = () => {
     }
   };
 
-  // Handle add location button click
+  const fetchWeatherByCoordinates = useCallback(async (lat, lon) => {
+    try {
+      const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=4eaa05d060a706d091b5db87df2eedb9&units=metric`);
+      setCurrentWeather(response.data);
+    } catch (error) {
+      alert('Error fetching weather data for current location.');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          fetchWeatherByCoordinates(position.coords.latitude, position.coords.longitude);
+        },
+        (error) => {
+          alert('Error fetching current location.');
+        }
+      );
+    }
+  }, [fetchWeatherByCoordinates]);
+
   const handleAddLocation = () => {
     if (location && !locations.includes(location)) {
       setLocations((prevLocations) => [...prevLocations, location]);
@@ -42,7 +62,6 @@ const App = () => {
     }
   };
 
-  // Create theme for dark and light modes
   const theme = useMemo(() => createTheme({
     palette: {
       mode: darkMode ? 'dark' : 'light',
@@ -76,6 +95,17 @@ const App = () => {
             Add Location
           </Button>
         </Paper>
+        {currentWeather && (
+          <Box mt={2}>
+            <Typography variant="h6">Current Location</Typography>
+            <Card style={{ marginTop: 8 }}>
+              <CardContent>
+                <Typography variant="h6">{currentWeather.name}</Typography>
+                <Typography variant="body1">Temperature: {currentWeather.main.temp}°C</Typography>
+              </CardContent>
+            </Card>
+          </Box>
+        )}
         <Box mt={2} display="flex" justifyContent="space-between" alignItems="center">
           <Typography variant="h6">
             {format(dateTime, 'PPPPpppp')}
