@@ -43,14 +43,14 @@ This is a weather application built using React and the Open Weather API. The ap
 
 1. Fetch Current Location Weather:
 
-- On initial load, the app will automatically fetch and display the weather for your current location.
+   - On initial load, the app will automatically fetch and display the weather for your current location.
 
 2. Search for Weather Information:
-- Enter a city name or zip code in the search input field.
-- Click the "Add Location" button to fetch and display the weather for the entered location.
+   - Enter a city name or zip code in the search input field.
+   - Click the "Add Location" button to fetch and display the weather for the entered location.
 
 3. Toggle Dark Mode:
-- Click the toggle button at the top right corner of the app to switch between dark mode and light
+   - Click the toggle button at the top right corner of the app to switch between dark mode and light
 
 ## Known Issues
 - The application does not handle API errors gracefully. Error messages could be improved for better user feedback.
